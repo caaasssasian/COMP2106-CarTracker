@@ -5,8 +5,13 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+// references we added 
+const mongoose = require('mongoose');
+const config = require('./config/globals');
+
 let index = require('./controllers/index');
 let users = require('./controllers/users');
+let cars = require('./controllers/cars');
 
 let app = express();
 
@@ -24,6 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+// map all requests with /cars to the cars controller
+app.use('/cars', cars);
+
+// db connection
+mongoose.connect(config.db);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

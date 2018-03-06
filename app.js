@@ -12,6 +12,7 @@ const config = require('./config/globals');
 let index = require('./controllers/index');
 let users = require('./controllers/users');
 let cars = require('./controllers/cars');
+let makes = require('./controllers/makes');
 
 let app = express();
 
@@ -31,6 +32,7 @@ app.use('/', index);
 app.use('/users', users);
 // map all requests with /cars to the cars controller
 app.use('/cars', cars);
+app.use('/makes', makes);
 
 // db connection
 mongoose.connect(config.db);

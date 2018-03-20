@@ -13,7 +13,8 @@ router.get('/', (req, res, next) => {
         else {
             res.render('cars/index', {
                 title: 'Car List',
-                cars: cars
+                cars: cars,
+                user: req.user
             });
         }
     });
@@ -22,7 +23,8 @@ router.get('/', (req, res, next) => {
 // GET: /cars/add
 router.get('/add', (req, res, next) => {
     res.render('cars/add', {
-        title: 'Add a New Car'
+        title: 'Add a New Car',
+        user: req.user
     });
 });
 
@@ -44,7 +46,7 @@ router.post('/add', (req, res, next) => {
     });
 });
 
-// GET: /cars/add/abc123
+// GET: /cars/delete/abc123
 router.get('/delete/:_id', (req, res, next) => {    
     // get the _id parameter from the url and store in a local variable
     let _id = req.params._id;
@@ -73,7 +75,8 @@ router.get('/edit/:_id', (req, res, next) => {
         else {
             res.render('cars/edit', {
                 title: 'Car Details',
-                car: car
+                car: car,
+                user: req.user
             });
         }
     });

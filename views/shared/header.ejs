@@ -8,12 +8,23 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 </head>
 <body>
-    <nav class="nav navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">COMP2106 Car Tracker</a>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
             <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
             <li class="nav-item"><a class="nav-link" href="/cars">Cars</a></li>
-            <li class="nav-item"><a class="nav-link" href="/makes">Makes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/makes">Manufacturers</a></li>
+        </ul>
+        <ul class="navbar-nav d-flex justify-content-end">
+            <% if (user == undefined) { %>
+            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+            <% } 
+            else { %>
+                <li class="nav-item nav-link"><%= user.username %></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+            <% } %>
         </ul>
     </nav>
+    <div class="container-fluid">

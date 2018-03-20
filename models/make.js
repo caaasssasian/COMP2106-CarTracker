@@ -7,11 +7,11 @@ const makeSchema = new mongoose.Schema({
         type: String,
         required: 'Name is required'
     },
-    model: {
+    country: {
         type: String,
         required: 'Model is required'
     },
-    yearFounded: {
+    year: {
         type: Number,
         required: 'Year founded is required'
     }

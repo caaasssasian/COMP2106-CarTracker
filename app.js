@@ -5,12 +5,17 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+
+
 // references we added 
 const mongoose = require('mongoose');
 const config = require('./config/globals');
+// auth packages
+const passport = require('passport');
+const session = require('express-session');
+const localStrategy = require('passport-local').Strategy;
 
 let index = require('./controllers/index');
-let users = require('./controllers/users');
 let cars = require('./controllers/cars');
 let makes = require('./controllers/makes');
 
@@ -28,14 +33,31 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// passport configuration
+app.use(session({
+  secret: 'any string for salting here',
+  resave: true,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', index);
-app.use('/users', users);
 // map all requests with /cars to the cars controller
 app.use('/cars', cars);
 app.use('/makes', makes);
 
 // db connection
 mongoose.connect(config.db);
+
+// reference User Model
+const User = require('./models/user');
+
+passport.use(User.createStrategy());
+
+// session management for users
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

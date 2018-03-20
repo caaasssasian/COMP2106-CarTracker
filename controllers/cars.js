@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Car = require('../models/car');
 
+const functions = require('../config/functions');
+
 // GET: /cars
 router.get('/', (req, res, next) => {
     // get car documents fom db
@@ -21,7 +23,7 @@ router.get('/', (req, res, next) => {
 });
 
 // GET: /cars/add
-router.get('/add', (req, res, next) => {
+router.get('/add', functions.isLoggedIn, (req, res, next) => {
     res.render('cars/add', {
         title: 'Add a New Car',
         user: req.user
@@ -29,7 +31,7 @@ router.get('/add', (req, res, next) => {
 });
 
 // POST: /cars/add
-router.post('/add', (req, res, next) => {
+router.post('/add', functions.isLoggedIn, (req, res, next) => {
     // use the Car model to save the new car
     Car.create({
         make: req.body.make,
@@ -47,7 +49,7 @@ router.post('/add', (req, res, next) => {
 });
 
 // GET: /cars/delete/abc123
-router.get('/delete/:_id', (req, res, next) => {    
+router.get('/delete/:_id', functions.isLoggedIn, (req, res, next) => {    
     // get the _id parameter from the url and store in a local variable
     let _id = req.params._id;
 
@@ -63,7 +65,7 @@ router.get('/delete/:_id', (req, res, next) => {
 });
 
 // GET: /cars/edit/abc123
-router.get('/edit/:_id', (req, res, next) => {
+router.get('/edit/:_id', functions.isLoggedIn, (req, res, next) => {
     // get the _id parameter from the url and store in a local variable
     let _id = req.params._id;
 
@@ -83,7 +85,7 @@ router.get('/edit/:_id', (req, res, next) => {
 });
 
 // POST: /cars/edit/abc123
-router.post('/edit/:_id', (req, res, next) => {
+router.post('/edit/:_id', functions.isLoggedIn, (req, res, next) => {
     // get the _id from the url
     let _id = req.params._id;
 
@@ -104,6 +106,8 @@ router.post('/edit/:_id', (req, res, next) => {
         });
 
 });
+
+
 
 // make public
 module.exports = router;

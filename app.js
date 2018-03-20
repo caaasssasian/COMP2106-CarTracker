@@ -14,6 +14,7 @@ const config = require('./config/globals');
 const passport = require('passport');
 const session = require('express-session');
 const localStrategy = require('passport-local').Strategy;
+const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 let index = require('./controllers/index');
 let cars = require('./controllers/cars');
@@ -54,6 +55,23 @@ mongoose.connect(config.db);
 const User = require('./models/user');
 
 passport.use(User.createStrategy());
+
+// google auth strategy
+passport.use(new googleStrategy({
+  clientID: config.google.googleClientId,
+  clientSecret: config.google.googleClientSecret,
+  callbackURL: config.google.googleCallbackUrl,
+  profileFields: ['id', 'emails']
+},
+  (accessToken, refreshToken, profile, callback) => {
+    User.findOrCreate({
+      googleId: profile.id,
+      username: profile.emails[0].value
+    }, (err, user) => {
+      return callback (err, user);
+    });
+  }
+));
 
 // session management for users
 passport.serializeUser(User.serializeUser());
